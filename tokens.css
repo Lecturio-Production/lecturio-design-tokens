@@ -1,0 +1,109 @@
+/* ─────────────────────────────────────────────────────────────────────────
+ * Lecturio Design Tokens
+ *
+ * The single source of truth for surfaces, text, brand color, shadows,
+ * radii, and typography. Import this file at the very top of any app's
+ * stylesheet so the custom properties are available everywhere.
+ *
+ *   @import "../design-tokens/tokens.css";
+ *
+ * Hard rules baked into the tokens:
+ *  - Primary color is Lecturio Green (#59a831). Never substitute another
+ *    brand color without coordinating with design.
+ *  - All radii are 0. Square corners are intentional - elevation comes
+ *    from `--card-shadow`, not borders + rounded corners.
+ *  - Noto Sans is the only font for display + body. Mono falls back to
+ *    the system mono stack.
+ * ──────────────────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: light;
+
+  /* ─── Surfaces ──────────────────────────────────────────────────────── */
+  --bg: #ffffff;            /* default page surface */
+  --bg-subtle: #f7f9fa;     /* one notch below page bg, for nested areas */
+  --bg-elev: #ffffff;       /* elevated surfaces (cards) - same as --bg */
+  --bg-elev-2: #f1f4f6;     /* hover backdrop, badge bg, idle state pills */
+  --bg-dim: #eaeef1;        /* disabled buttons, inert blocks */
+
+  /* ─── Text ──────────────────────────────────────────────────────────── */
+  --fg: #0f172a;            /* primary text */
+  --fg-muted: #5c6773;      /* secondary text, helper text */
+  --muted: #8893a0;         /* tertiary text, placeholders, footers */
+
+  /* ─── Borders ───────────────────────────────────────────────────────── *
+   * Inputs and buttons use borders. Cards use shadow instead - never both. */
+  --border: #e2e8ed;
+  --border-strong: #cbd5db;
+
+  /* ─── Brand: primary green ──────────────────────────────────────────── */
+  --primary: #59a831;
+  --primary-hover: #4a8f28;
+  --primary-soft: #eaf4df;
+  --primary-border: #a8d18e;
+  --primary-shadow: rgba(89, 168, 49, 0.25);
+  /* Aliases retained for ergonomics in legacy code. Prefer --primary-* */
+  --green: var(--primary);
+  --green-hover: var(--primary-hover);
+  --green-soft: var(--primary-soft);
+  --green-border: var(--primary-border);
+  --green-shadow: var(--primary-shadow);
+
+  /* ─── States ────────────────────────────────────────────────────────── */
+  --amber: #d97706;         /* warning fg */
+  --amber-soft: #fef3c7;    /* warning bg */
+  --red: #dc2626;           /* danger fg */
+  --red-soft: #fee2e2;      /* danger bg */
+  --blue: #2563eb;          /* info fg, secondary nav accent */
+  --blue-soft: #dbeafe;     /* info bg */
+
+  /* ─── Card shadow stack ─────────────────────────────────────────────── *
+   * Cards use a multi-layer drop shadow. No outline, no border. Hover
+   * variant lifts more aggressively to telegraph interactivity. */
+  --card-shadow:
+    0 1px 3px rgba(12, 20, 28, 0.06),
+    0 4px 10px rgba(12, 20, 28, 0.07),
+    0 12px 24px -6px rgba(12, 20, 28, 0.10);
+  --card-shadow-hover:
+    0 2px 6px rgba(12, 20, 28, 0.08),
+    0 8px 18px rgba(12, 20, 28, 0.10),
+    0 18px 32px -8px rgba(12, 20, 28, 0.14);
+  --shadow-focus: 0 0 0 3px rgba(89, 168, 49, 0.18);
+
+  /* ─── Radii ─────────────────────────────────────────────────────────── *
+   * All zero. Do not change. Square corners are part of the brand. */
+  --r-sm: 0;
+  --r-md: 0;
+  --r-lg: 0;
+  --r-xl: 0;
+
+  /* ─── Typography ────────────────────────────────────────────────────── *
+   * Noto Sans (variable font) is used for both display and body. To
+   * self-host, drop the variable .ttf into the consuming app's public/
+   * directory and add @font-face referring to it. */
+  --font-display: "Noto Sans", system-ui, -apple-system, sans-serif;
+  --font-body: "Noto Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Foundation resets that pair with the tokens. Keep these here so any
+ * importing app gets consistent baseline behavior.
+ * ──────────────────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-subtle);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--fg);
+  margin: 0;
+}

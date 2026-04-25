@@ -1,0 +1,431 @@
+/* ─────────────────────────────────────────────────────────────────────────
+ * Lecturio Component Primitives
+ *
+ * Reusable building blocks expressed as plain CSS classes. Designed to
+ * compose the same way regardless of framework (React, Vue, plain HTML).
+ *
+ * All classes are prefixed with `lc-` to avoid collisions with app-local
+ * styles. Combine them freely; do not nest opinionated layout into them.
+ *
+ * Required: tokens.css must be imported first.
+ *   @import "../design-tokens/tokens.css";
+ *   @import "../design-tokens/components.css";
+ * ──────────────────────────────────────────────────────────────────────── */
+
+/* ─── Page header pattern ────────────────────────────────────────────────
+ * Use for the top of any list/index page. Eyebrow + title + sub.
+ *
+ *   <header class="lc-page-header">
+ *     <div>
+ *       <div class="lc-eyebrow">Library</div>
+ *       <h1 class="lc-page-title">Narrated Scenes</h1>
+ *       <p class="lc-page-sub">One-line description of what this page does.</p>
+ *     </div>
+ *     <button class="lc-btn lc-btn--primary">Neue Scene</button>
+ *   </header>
+ * ───────────────────────────────────────────────────────────────────────── */
+.lc-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding-bottom: 24px;
+}
+.lc-eyebrow {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 700;
+}
+.lc-page-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  margin: 6px 0;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  line-height: 1.1;
+}
+.lc-page-sub {
+  color: var(--fg-muted);
+  font-size: 15px;
+  margin: 0;
+  max-width: 620px;
+  line-height: 1.55;
+}
+.lc-panel-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────
+ * Three variants:
+ *   .lc-btn--primary  → main action (filled green)
+ *   .lc-btn--secondary → second-priority action (outline)
+ *   .lc-btn--ghost    → tertiary / icon-only / list actions
+ *
+ *   <button class="lc-btn lc-btn--primary">Save</button>
+ *   <a class="lc-btn lc-btn--secondary" href="...">Edit</a>
+ *
+ * Pair with Lucide icons inline; the .lc-btn class sizes svg children to 16px.
+ * ───────────────────────────────────────────────────────────────────────── */
+.lc-btn {
+  padding: 9px 18px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.08s, filter 0.12s, border-color 0.12s,
+              background 0.12s, box-shadow 0.15s, color 0.12s;
+  border: 1px solid transparent;
+  letter-spacing: -0.005em;
+  background: transparent;
+  color: inherit;
+}
+.lc-btn svg { width: 16px; height: 16px; }
+
+.lc-btn--primary {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 1px 2px var(--primary-shadow);
+}
+.lc-btn--primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--primary-shadow);
+}
+.lc-btn--primary:disabled {
+  background: var(--bg-elev-2);
+  color: var(--muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.lc-btn--secondary {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border-strong);
+}
+.lc-btn--secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.lc-btn--ghost {
+  background: transparent;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+}
+.lc-btn--ghost:hover {
+  color: var(--fg);
+  background: var(--bg-elev-2);
+}
+.lc-btn--ghost.is-danger:hover {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+/* Large CTA - use sparingly, for the single most important action on a page. */
+.lc-cta {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 12px 22px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  transition: transform 0.1s, background 0.12s, box-shadow 0.15s;
+  box-shadow: 0 1px 2px var(--primary-shadow), 0 4px 10px var(--primary-shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.lc-cta svg { width: 18px; height: 18px; }
+.lc-cta:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: var(--primary-hover);
+  box-shadow: 0 2px 4px var(--primary-shadow), 0 8px 16px var(--primary-shadow);
+}
+.lc-cta:disabled {
+  background: var(--bg-dim);
+  color: var(--muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ─── Card ───────────────────────────────────────────────────────────────
+ * The fundamental container. Drop shadow elevates - no border, no radius.
+ * Use for list items, content blocks, side panels.
+ *
+ *   <article class="lc-card">…</article>
+ *   <article class="lc-card lc-card--clickable" onClick={…}>…</article>
+ * ───────────────────────────────────────────────────────────────────────── */
+.lc-card {
+  background: var(--bg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.lc-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+.lc-card--clickable {
+  cursor: pointer;
+}
+.lc-card--clickable:hover {
+  transform: translateY(-2px);
+}
+.lc-card--clickable:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Card sub-elements (compose freely) */
+.lc-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lc-card-badge {
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.lc-card-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.lc-card-sub {
+  color: var(--fg-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.lc-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.lc-card-footer {
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 10px;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  border-top: 1px dashed var(--border);
+}
+
+/* Empty-state pattern: use inside a .lc-card or stand-alone. */
+.lc-empty {
+  padding: 80px 40px;
+  text-align: center;
+  background: var(--bg);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.lc-empty-icon { color: var(--primary); }
+.lc-empty-head {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+}
+.lc-empty-sub {
+  color: var(--fg-muted);
+  max-width: 440px;
+}
+
+/* Card grid - drop a list of .lc-cards in. Auto-fills 300px+ tracks. */
+.lc-card-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ─── Form block ─────────────────────────────────────────────────────────
+ * Section wrapper for grouped form fields. Use within an .lc-card-grid
+ * or stack vertically.
+ *
+ *   <div class="lc-form-block">
+ *     <div class="lc-form-block-head">Audio</div>
+ *     <label class="lc-form-field"><span>URL</span><input … /></label>
+ *   </div>
+ * ───────────────────────────────────────────────────────────────────────── */
+.lc-form-block {
+  background: var(--bg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--card-shadow);
+}
+.lc-form-block-head {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--fg-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lc-form-block-head svg { width: 14px; height: 14px; }
+
+.lc-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.lc-form-field > span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-muted);
+  letter-spacing: 0.01em;
+}
+.lc-form-field input,
+.lc-form-field textarea,
+.lc-form-field select {
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  color: var(--fg);
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  transition: border-color 0.12s, box-shadow 0.15s;
+}
+.lc-form-field input::placeholder,
+.lc-form-field textarea::placeholder { color: var(--muted); }
+.lc-form-field input:focus,
+.lc-form-field textarea:focus,
+.lc-form-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.lc-form-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.lc-form-warning {
+  padding: 10px 14px;
+  background: var(--amber-soft);
+  border-left: 3px solid var(--amber);
+  font-size: 13px;
+  color: #92400e;
+  line-height: 1.45;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.lc-form-warning svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ─── App shell (top bar + nav) ──────────────────────────────────────────
+ * Standard layout for tools with multiple sections. Adapt internal nav
+ * links per app.
+ * ───────────────────────────────────────────────────────────────────────── */
+.lc-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-subtle);
+}
+.lc-shell-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 32px;
+  height: 64px;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow:
+    0 1px 0 rgba(12, 20, 28, 0.08),
+    0 2px 8px rgba(12, 20, 28, 0.04);
+}
+.lc-shell-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  text-decoration: none;
+}
+.lc-shell-brand:hover { opacity: 0.75; }
+.lc-shell-nav { display: flex; gap: 4px; }
+.lc-shell-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  color: var(--fg-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid transparent;
+  transition: color 0.15s, background 0.15s;
+}
+.lc-shell-nav-link:hover {
+  color: var(--fg);
+  background: var(--bg-elev-2);
+}
+.lc-shell-nav-link.is-active {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+.lc-shell-nav-link svg { width: 16px; height: 16px; }
+.lc-shell-spacer { flex: 1; }
+.lc-shell-main {
+  flex: 1;
+  padding: 40px 32px 80px;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
