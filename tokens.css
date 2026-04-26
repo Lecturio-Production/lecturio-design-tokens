@@ -12,9 +12,15 @@
  *    brand color without coordinating with design.
  *  - All radii are 0. Square corners are intentional - elevation comes
  *    from `--card-shadow`, not borders + rounded corners.
- *  - Noto Sans is the only font for display + body. Mono falls back to
- *    the system mono stack.
+ *  - Noto Sans is the only font for display + body. Loaded automatically
+ *    via Google Fonts (see @import below). Mono falls back to the system
+ *    mono stack.
  * ──────────────────────────────────────────────────────────────────────── */
+
+/* Noto Sans - loaded once, here, so every consuming app gets the font for
+ * free just by importing tokens.css. `display=swap` shows the fallback
+ * stack until the variable font finishes loading. */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
   color-scheme: light;

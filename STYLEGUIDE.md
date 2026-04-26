@@ -27,7 +27,7 @@ These are not preferences. Violating them is a bug.
 1. **Primary color is `#59a831` (Lecturio Green).** Use `var(--primary)`. Do not introduce another brand color.
 2. **All radii are zero.** Square corners only. The token names `--r-sm`, `--r-md`, `--r-lg` exist for legacy compat but all evaluate to `0`. Do not write `border-radius: 8px` anywhere.
 3. **Cards have no border.** Elevation comes from `var(--card-shadow)`. Inputs and buttons have borders; cards do not.
-4. **Noto Sans is the only font.** Variable font, self-hosted. Display and body share the same family. Mono falls back to the system mono stack.
+4. **Noto Sans is the only font.** Loaded automatically via Google Fonts CDN from inside `tokens.css` — consuming apps don't need to set up `@font-face` or `<link>` tags themselves. Display and body share the same family. Mono falls back to the system mono stack.
 5. **No emojis as icons.** Use Lucide React (`lucide-react`) for every icon. Default size is `16px`; large CTAs use `18px`. Stroke width is the Lucide default.
 6. **No Tailwind, no CSS-in-JS, no styled-components.** Plain CSS only, classes from this design system or app-local CSS that uses the tokens.
 
