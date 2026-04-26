@@ -8,14 +8,32 @@ If you're an AI agent: read this entire file before generating UI. Apply the pat
 
 ## Files
 
-- **`tokens.css`** — CSS custom properties: colors, shadows, typography, radii. Import first.
-- **`components.css`** — Reusable component primitives (`.lc-btn`, `.lc-card`, `.lc-form-block`, etc.). Import second.
+- **`tokens.css`** — CSS custom properties: colors, shadows, typography, radii. Import in your app's stylesheet (gives runtime access to `var(--primary)` etc. for the `.lc-*` primitives and any plain CSS).
+- **`tailwind-preset.cjs`** — Tailwind preset that wires the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Add it to your `tailwind.config.ts` `presets` array.
+- **`components.css`** — Reusable component primitives (`.lc-btn`, `.lc-card`, `.lc-form-block`, etc.). Import after Tailwind so `@layer components` ordering is correct.
 - **`STYLEGUIDE.md`** — This document. Rules + recipes.
+- **`STACK.md`** — The mandatory tech stack contract (React, Tailwind version, Radix, Lucide, …).
+
+```ts
+// tailwind.config.ts
+import type { Config } from "tailwindcss";
+import lecturioPreset from "./design-tokens/tailwind-preset.cjs";
+
+const config: Config = {
+  presets: [lecturioPreset],
+  content: [/* your file globs */],
+};
+export default config;
+```
 
 ```css
-/* In your app's main stylesheet, top of file: */
-@import "../design-tokens/tokens.css";
-@import "../design-tokens/components.css";
+/* src/app/globals.css (or your app's main stylesheet) */
+@import "../../design-tokens/tokens.css";
+@import "../../design-tokens/components.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 ```
 
 ---
@@ -24,12 +42,13 @@ If you're an AI agent: read this entire file before generating UI. Apply the pat
 
 These are not preferences. Violating them is a bug.
 
-1. **Primary color is `#59a831` (Lecturio Green).** Use `var(--primary)`. Do not introduce another brand color.
-2. **All radii are zero.** Square corners only. The token names `--r-sm`, `--r-md`, `--r-lg` exist for legacy compat but all evaluate to `0`. Do not write `border-radius: 8px` anywhere.
-3. **Cards have no border.** Elevation comes from `var(--card-shadow)`. Inputs and buttons have borders; cards do not.
-4. **Noto Sans is the only font.** Loaded automatically via Google Fonts CDN from inside `tokens.css` — consuming apps don't need to set up `@font-face` or `<link>` tags themselves. Display and body share the same family. Mono falls back to the system mono stack.
-5. **No emojis as icons.** Use Lucide React (`lucide-react`) for every icon. Default size is `16px`; large CTAs use `18px`. Stroke width is the Lucide default.
-6. **No Tailwind, no CSS-in-JS, no styled-components.** Plain CSS only, classes from this design system or app-local CSS that uses the tokens.
+1. **Tailwind is the styling layer.** Compose UI with Tailwind utility classes and the `.lc-*` component primitives. No CSS-in-JS (styled-components, emotion, vanilla-extract). Plain CSS modules are allowed for app-local rules that the tokens don't cover, but the brand-tokenized utilities should always be the first reach.
+2. **Use the Lecturio Tailwind preset.** Every consuming tool's `tailwind.config.ts` includes `lecturioPreset` in `presets`. Do not redefine colors, fonts, radii locally — extend through the preset only.
+3. **Primary color is `#59a831` (Lecturio Green).** Use `bg-primary`/`text-primary` (Tailwind) or `var(--primary)` (raw CSS). Do not introduce another brand color.
+4. **All radii are zero.** Square corners only. Tailwind's `rounded-*` utilities all resolve to `0`. The exception: `rounded-full` is preserved (9999px) for genuinely circular elements like avatars.
+5. **Cards have no border.** Elevation comes from `shadow-card` (Tailwind) or `var(--card-shadow)` (raw). Inputs and buttons have borders; cards do not.
+6. **Noto Sans is the only font.** Loaded automatically by `tokens.css`. Tailwind's `font-sans` / `font-display` / `font-mono` all map to the right family.
+7. **No emojis as icons.** Use Lucide React (`lucide-react`) for every icon. Default size is `16px`; large CTAs use `18px`. Stroke width is the Lucide default.
 
 ---
 
@@ -239,15 +258,15 @@ Don't introduce sizes between these stops.
 
 ## What NOT to do
 
-- ❌ Round corners (`border-radius: 8px`)
-- ❌ Tailwind classes
+- ❌ Round corners (`rounded-md`, `border-radius: 8px`) — Tailwind preset already collapses these
+- ❌ CSS-in-JS (styled-components, emotion, vanilla-extract) — even "just for one component"
+- ❌ Local Tailwind color overrides — extend the preset upstream instead
 - ❌ Emojis as functional icons (decoration in slide content is fine)
 - ❌ Drop-shadow on buttons that already have a brand-shadow (no double shadows)
 - ❌ Borders + box-shadows on the same card
 - ❌ Custom brand colors per tool ("oh just for this one we used purple")
 - ❌ System fonts as primary (always Noto Sans)
 - ❌ Indeterminate states without a state pill (`scene-state` pattern: small mono badge)
-- ❌ "Just one CSS-in-JS component"
 
 ---
 
@@ -255,9 +274,10 @@ Don't introduce sizes between these stops.
 
 When generating UI in any Lecturio tool:
 
-1. **Always import `tokens.css` first, `components.css` second.**
-2. **Compose with `lc-`-prefixed primitives whenever possible.** If you find yourself writing a button style, stop — use `.lc-btn` + a variant.
-3. **Read this STYLEGUIDE.md before writing any component-level CSS.**
-4. **When in doubt about a value (color, spacing, font-size), use the tokens or scales above.** Don't invent.
-5. **App-specific styles go in the consuming app's CSS, not in this design system.** Tool-specific layouts (e.g. `.editor-layout`, `.scene-grid`) belong in the app, not here.
-6. **If the request needs something that doesn't fit any pattern here**, surface that explicitly. The right answer might be to extend `components.css` upstream rather than creating a one-off in the consuming app.
+1. **The stack is fixed. See `STACK.md`.** React + Tailwind + Radix + Lucide. Don't propose alternatives.
+2. **Always import the Lecturio Tailwind preset** in `tailwind.config.ts` and `tokens.css` + `components.css` in the app's main stylesheet. If they're not wired up, fix that first before generating any other UI.
+3. **Compose with `lc-`-prefixed primitives whenever possible.** If you find yourself writing a button style, stop — use `.lc-btn` + a variant. If you need a layout primitive that doesn't exist, propose it as a new `.lc-*` class upstream rather than ad-hoc styling.
+4. **Read this STYLEGUIDE.md and `STACK.md` before writing any UI.**
+5. **When in doubt about a value (color, spacing, font-size), use Tailwind utilities first, then `var(--*)` tokens.** Don't invent.
+6. **App-specific styles go in the consuming app's CSS, not in this design system.** Tool-specific layouts (e.g. `.editor-layout`, `.scene-grid`) belong in the app, not here.
+7. **If the request needs something that doesn't fit any pattern here**, surface that explicitly. The right answer might be to extend `components.css` or the preset upstream rather than creating a one-off in the consuming app.

@@ -1,72 +1,80 @@
-# lecturio-design-tokens (extract)
+# lecturio-design-tokens
 
-These three files are the seed for the new `lecturio-design-tokens` repo.
+The shared design system + tech stack contract for every internal Lecturio tool.
 
-**This directory is not consumed by the SceneEditor.** It is an extract that you copy into a fresh GitHub repo, then re-attach to each tool as a Git submodule.
+This repo is consumed as a **git submodule** in each tool. Pinning to a specific commit makes builds reproducible: a tool deployed today and the same tool deployed in six months produce the same look unless someone explicitly bumps the submodule.
 
-## Files
+## What's in here
 
 | File | Purpose |
 |---|---|
-| `tokens.css` | CSS custom properties (colors, shadows, typography). Import first. |
-| `components.css` | Reusable `.lc-*` component classes. Import second. |
-| `STYLEGUIDE.md` | The rules + recipes. Both humans and AI agents read this. |
+| `tokens.css` | CSS custom properties (colors, shadows, typography) + Noto Sans loader. Imported in the consuming app's main stylesheet for runtime access via `var(--*)`. |
+| `tailwind-preset.cjs` | Tailwind preset wiring the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Added to each tool's `tailwind.config.ts` `presets` array. |
+| `components.css` | `.lc-*` component primitives (button, card, page-header, form-block, app-shell). |
+| `STYLEGUIDE.md` | Hard rules + component recipes. **Read this before writing UI.** |
+| `STACK.md` | Mandatory tech stack contract (React, Tailwind, Radix, Lucide). |
+| `preview.html` | Static preview of the components + tokens. Open in a browser. |
 
-## How to bootstrap the shared repo
-
-```bash
-# 1. Create empty GitHub repo at github.com/lecturio/design-tokens (private)
-
-# 2. Initialise locally and copy the three files
-mkdir -p ~/code/lecturio-design-tokens
-cd ~/code/lecturio-design-tokens
-git init && git remote add origin git@github.com:lecturio/design-tokens.git
-
-# Copy the three files from this extract directory
-cp /path/to/SceneEditor/design-tokens-extract/{tokens.css,components.css,STYLEGUIDE.md,README.md} .
-
-# 3. First commit + push
-git add . && git commit -m "initial: extract from scene-editor"
-git push -u origin main
-```
-
-## How to attach in any consuming tool
+## Attaching this repo to a tool
 
 ```bash
-cd ~/code/<tool>
-git submodule add git@github.com:lecturio/design-tokens.git design-tokens
+cd ~/code/<your-tool>
+git submodule add https://github.com/Lecturio-Production/lecturio-design-tokens.git design-tokens
 git commit -m "chore: add design-tokens submodule"
 ```
 
-Then in the tool's main stylesheet:
+Then in the tool:
 
-```css
-@import "../design-tokens/tokens.css";
-@import "../design-tokens/components.css";
+**`tailwind.config.ts`**
+```ts
+import type { Config } from "tailwindcss";
+import lecturioPreset from "./design-tokens/tailwind-preset.cjs";
+
+const config: Config = {
+  presets: [lecturioPreset],
+  content: ["./src/**/*.{ts,tsx,js,jsx,mdx}"],
+};
+export default config;
 ```
 
-For Vite-based tools, the relative path resolves correctly from `src/App.css`. For other setups, adjust accordingly.
+**`src/app/globals.css`** (or your equivalent)
+```css
+@import "../../design-tokens/tokens.css";
+@import "../../design-tokens/components.css";
 
-## How clones / CI fetch the submodule
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+**Containerfile** — see the orchestrator's `Containerfile` for the canonical submodule-fetch block (Railway clones repos without `.git`, so we re-clone the submodule by URL during the build).
+
+## Updating to a newer design-tokens commit
 
 ```bash
-# When cloning fresh
-git clone --recurse-submodules git@github.com:lecturio/<tool>.git
+cd ~/code/<your-tool>
+git submodule update --remote design-tokens
+git add design-tokens
+git commit -m "chore: bump design-tokens"
+git push
+```
 
-# Or after a normal clone
+This is a deliberate per-tool action — no auto-update at deploy time. That's the point: what you preview locally is what ships.
+
+## Cloning a tool fresh
+
+```bash
+git clone --recurse-submodules <tool-repo-url>
+# or after a normal clone:
 git submodule update --init --recursive
 ```
 
-GitHub Actions checkout step:
+## Modifying the design system
 
-```yaml
-- uses: actions/checkout@v4
-  with:
-    submodules: true
-```
+Changes happen here, in this repo. Push to `main`. Then bump the submodule pin in each consuming tool that should pick the change up. There is no global rollout.
 
-Railway / Containerfile builds: ensure `git submodule update --init` runs before `npm ci`, or commit the submodule contents into Docker context another way.
+If the change is breaking (renamed token, removed `.lc-*` class, changed Tailwind preset shape), call it out in the commit message — consumers need to know what to migrate.
 
-## After bootstrap, delete this directory
+## Local preview
 
-Once the shared repo exists and is attached as a submodule to the SceneEditor, this `design-tokens-extract/` directory should be deleted from this repo — its purpose is one-shot.
+Open `preview.html` in any browser to see the components + tokens rendered.
