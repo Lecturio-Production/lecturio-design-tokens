@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lecturio Design Tokens · Preview</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="components.css" />
+  <style>
+    /* Preview-only styles - not part of the design system */
+    .preview-section {
+      padding: 48px 0;
+      border-top: 1px dashed var(--border);
+    }
+    .preview-section:first-of-type { border-top: none; }
+    .preview-section-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .preview-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .preview-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 720px;
+    }
+    .preview-grid-demo {
+      max-width: 1000px;
+    }
+    .swatch {
+      width: 80px;
+      height: 80px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      padding: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--fg);
+      background: var(--bg);
+    }
+    .swatch-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .swatch span { background: rgba(255,255,255,0.7); padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <div class="lc-shell">
+    <header class="lc-shell-header">
+      <a class="lc-shell-brand" href="#">
+        <span>Lecturio</span>
+        <span style="opacity: 0.4">·</span>
+        <span style="font-weight: 600; color: var(--fg-muted)">Design Tokens</span>
+      </a>
+      <nav class="lc-shell-nav">
+        <a class="lc-shell-nav-link is-active" href="#">Preview</a>
+        <a class="lc-shell-nav-link" href="STYLEGUIDE.md">Styleguide</a>
+      </nav>
+      <span class="lc-shell-spacer"></span>
+    </header>
+
+    <main class="lc-shell-main">
+
+      <header class="lc-page-header">
+        <div>
+          <div class="lc-eyebrow">Design System</div>
+          <h1 class="lc-page-title">Component Preview</h1>
+          <p class="lc-page-sub">
+            Lebende Vorschau aller Primitives aus <code>tokens.css</code> + <code>components.css</code>.
+            Beim Editieren der Stylesheets einfach den Browser reloaden.
+          </p>
+        </div>
+        <button class="lc-btn lc-btn--primary">
+          <i data-lucide="plus"></i> Neue Action
+        </button>
+      </header>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Color tokens</div>
+        <div class="swatch-row">
+          <div class="swatch" style="background: var(--primary); color: #fff"><span style="background:rgba(0,0,0,0.3); color:#fff">--primary</span></div>
+          <div class="swatch" style="background: var(--primary-hover); color: #fff"><span style="background:rgba(0,0,0,0.3); color:#fff">primary-hover</span></div>
+          <div class="swatch" style="background: var(--primary-soft)"><span>primary-soft</span></div>
+          <div class="swatch" style="background: var(--bg)"><span>bg</span></div>
+          <div class="swatch" style="background: var(--bg-subtle)"><span>bg-subtle</span></div>
+          <div class="swatch" style="background: var(--bg-elev-2)"><span>bg-elev-2</span></div>
+          <div class="swatch" style="background: var(--amber-soft)"><span>amber-soft</span></div>
+          <div class="swatch" style="background: var(--red-soft)"><span>red-soft</span></div>
+          <div class="swatch" style="background: var(--blue-soft)"><span>blue-soft</span></div>
+        </div>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Buttons</div>
+        <div class="preview-row">
+          <button class="lc-btn lc-btn--primary"><i data-lucide="save"></i> Speichern</button>
+          <button class="lc-btn lc-btn--secondary"><i data-lucide="pencil"></i> Bearbeiten</button>
+          <button class="lc-btn lc-btn--ghost"><i data-lucide="rotate-ccw"></i> Reset</button>
+          <button class="lc-btn lc-btn--ghost is-danger"><i data-lucide="trash-2"></i> Löschen</button>
+          <button class="lc-btn lc-btn--primary" disabled>Disabled</button>
+        </div>
+        <div class="preview-row">
+          <button class="lc-cta">
+            <i data-lucide="sparkles"></i> Großer CTA
+          </button>
+        </div>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Page header pattern</div>
+        <div class="preview-stack">
+          <div style="background: var(--bg); padding: 24px; box-shadow: var(--card-shadow)">
+            <div class="lc-eyebrow">Library</div>
+            <h2 class="lc-page-title">Narrated Scenes</h2>
+            <p class="lc-page-sub">
+              Erstell eine Scene aus Audio + Transcript. Die Slides leiten sich aus dem Transcript ab.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Cards (grid)</div>
+        <ul class="lc-card-grid preview-grid-demo">
+          <li class="lc-card lc-card--clickable">
+            <div class="lc-card-head">
+              <span class="lc-card-badge">9 Slides</span>
+              <span style="font-family: var(--font-mono); color: var(--fg-muted); font-size: 13px;">04:30</span>
+            </div>
+            <div class="lc-card-title">Healthy Foods Intro</div>
+            <div class="lc-card-sub">Daily routine — fünf Kategorien mit Beispielen.</div>
+            <div class="lc-card-actions">
+              <button class="lc-btn lc-btn--secondary"><i data-lucide="pencil"></i> Bearbeiten</button>
+              <button class="lc-btn lc-btn--ghost is-danger"><i data-lucide="trash-2"></i></button>
+            </div>
+            <div class="lc-card-footer">Aktualisiert: 26.04.2026 14:12</div>
+          </li>
+          <li class="lc-card">
+            <div class="lc-card-head">
+              <span class="lc-card-badge">3 Slides</span>
+              <span style="font-family: var(--font-mono); color: var(--fg-muted); font-size: 13px;">01:45</span>
+            </div>
+            <div class="lc-card-title">EKG · P-Wave Check</div>
+            <div class="lc-card-sub">Hotspot-Klick auf animierter Trace, mit Remediation.</div>
+            <div class="lc-card-actions">
+              <button class="lc-btn lc-btn--secondary"><i data-lucide="pencil"></i> Bearbeiten</button>
+              <button class="lc-btn lc-btn--ghost is-danger"><i data-lucide="trash-2"></i></button>
+            </div>
+            <div class="lc-card-footer">Aktualisiert: 22.04.2026 09:55</div>
+          </li>
+          <li class="lc-card">
+            <div class="lc-card-head">
+              <span class="lc-card-badge">12 Slides</span>
+              <span style="font-family: var(--font-mono); color: var(--fg-muted); font-size: 13px;">07:00</span>
+            </div>
+            <div class="lc-card-title">Cell Diagram</div>
+            <div class="lc-card-sub">Drag-and-Drop-Labels auf SVG-Diagramm.</div>
+            <div class="lc-card-actions">
+              <button class="lc-btn lc-btn--secondary"><i data-lucide="pencil"></i> Bearbeiten</button>
+              <button class="lc-btn lc-btn--ghost is-danger"><i data-lucide="trash-2"></i></button>
+            </div>
+            <div class="lc-card-footer">Aktualisiert: 18.04.2026 17:20</div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Empty state</div>
+        <div class="preview-stack">
+          <div class="lc-empty">
+            <div class="lc-empty-icon">
+              <i data-lucide="folder-plus" style="width: 48px; height: 48px; stroke-width: 1.5;"></i>
+            </div>
+            <div class="lc-empty-head">Noch keine Scenes</div>
+            <div class="lc-empty-sub">Leg eine erste Scene an — du brauchst nur eine Audio-URL und einen Transcript.</div>
+            <button class="lc-btn lc-btn--primary"><i data-lucide="plus"></i> Erste Scene erstellen</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Form block</div>
+        <div class="preview-stack">
+          <div class="lc-form-block">
+            <div class="lc-form-block-head">
+              <span>Audio</span>
+              <i data-lucide="volume-2"></i>
+            </div>
+            <label class="lc-form-field">
+              <span>URL</span>
+              <input type="url" placeholder="https://…" value="https://cdn.lecturio.de/speakertext.mp3" />
+            </label>
+            <div class="lc-form-row">
+              <label class="lc-form-field">
+                <span>Start</span>
+                <input type="text" placeholder="00:00" value="00:00" />
+              </label>
+              <label class="lc-form-field">
+                <span>Ende</span>
+                <input type="text" placeholder="01:30" value="01:30" />
+              </label>
+            </div>
+            <div class="lc-form-warning">
+              <i data-lucide="alert-triangle"></i>
+              <span>Audio-URL ist eine Session-URL und überlebt einen Reload nicht.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Panel title (kleine Section-Header)</div>
+        <div class="preview-row">
+          <div class="lc-panel-title">Telemetry</div>
+          <div class="lc-panel-title" style="color: var(--primary)">Active</div>
+          <div class="lc-panel-title" style="color: var(--blue)">Experimental</div>
+        </div>
+      </section>
+
+      <section class="preview-section">
+        <div class="preview-section-title">Typography scale</div>
+        <h1 class="lc-page-title">Page title · 36/800</h1>
+        <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin: 16px 0;">Editor title · 28/800</h2>
+        <h3 style="font-family: var(--font-display); font-size: 22px; font-weight: 700; margin: 16px 0;">Empty state · 22/700</h3>
+        <h4 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin: 16px 0;">Card title · 18/700</h4>
+        <p style="font-size: 14px; line-height: 1.5; margin: 8px 0;">Body / 14/400 · Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p style="font-size: 13px; color: var(--fg-muted); line-height: 1.55;">Sub / 13/400 muted · Sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+        <p class="lc-eyebrow" style="margin-top: 16px;">Eyebrow · 12/700 · 0.18em tracked</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Lucide icons via CDN, no build step needed -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

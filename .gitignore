@@ -1,0 +1,11 @@
+# Local experiments. Drop any HTML / JSX / React / Vite playground files
+# you want to scratch around in here - they stay out of git.
+playground/
+
+# Common noise
+node_modules/
+dist/
+.DS_Store
+*.log
+.vite/
+.cache/
