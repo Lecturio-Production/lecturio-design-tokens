@@ -10,7 +10,8 @@ If you're an AI agent: read this entire file before generating UI. Apply the pat
 
 - **`tokens.css`** — CSS custom properties: colors, shadows, typography, radii. Import in your app's stylesheet (gives runtime access to `var(--primary)` etc. for the `.lc-*` primitives and any plain CSS).
 - **`tailwind-preset.cjs`** — Tailwind preset that wires the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Add it to your `tailwind.config.ts` `presets` array.
-- **`components.css`** — Reusable component primitives (`.lc-btn`, `.lc-card`, `.lc-form-block`, etc.). Import after Tailwind so `@layer components` ordering is correct.
+- **`components.css`** — Reusable component primitives (`.lc-btn`, `.lc-card`, `.lc-form-block`, `.lc-shell-header`, `.lc-shell-footer`, etc.). Import after Tailwind so `@layer components` ordering is correct.
+- **`react/`** — Source-only React components for the most-used patterns (`LcShell`, `LcShellHeader`, `LcShellFooter`, `LcPageHeader`). Import directly from the submodule. See `react/README.md`.
 - **`STYLEGUIDE.md`** — This document. Rules + recipes.
 - **`STACK.md`** — The mandatory tech stack contract (React, Tailwind version, Radix, Lucide, …).
 
@@ -186,6 +187,29 @@ Always pair empty state with a single primary action that resolves it.
 
 ### App shell
 
+**For React tools, prefer the ready-made components from `react/`** — they enforce the layout and accept slots for tool-specific content:
+
+```tsx
+import { LcShell, LcShellMain, LcShellHeader, LcShellFooter } from "../../design-tokens/react";
+
+<LcShell>
+  <LcShellHeader
+    brand={{ label: "MyTool", logoSrc: "/logo.svg" }}
+    navItems={[
+      { href: "/library", label: "Library", icon: Library, isActive: true },
+      { href: "/experimental", label: "Experimental", icon: Beaker },
+    ]}
+    rightSlot={<MyUserMenu />}
+    LinkComponent={NextLink}
+    ImageComponent={NextImage}
+  />
+  <LcShellMain>{children}</LcShellMain>
+  <LcShellFooter leftSlot={<>© 2026 Lecturio</>} />
+</LcShell>
+```
+
+The plain HTML version below is the same markup the React components produce — useful for non-React tools or to understand what the components render:
+
 ```html
 <div class="lc-shell">
   <header class="lc-shell-header">
@@ -201,6 +225,10 @@ Always pair empty state with a single primary action that resolves it.
   <main class="lc-shell-main">
     {/* page content */}
   </main>
+  <footer class="lc-shell-footer">
+    <div>© 2026 Lecturio</div>
+    <div></div>
+  </footer>
 </div>
 ```
 

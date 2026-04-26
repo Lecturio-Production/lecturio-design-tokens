@@ -429,3 +429,47 @@
   display: flex;
   flex-direction: column;
 }
+
+/* ─── App shell footer ─────────────────────────────────────────────────
+ * Bottom strip of the shell. Three slot pattern matching the header:
+ * left (brand/copyright), center (links), right (meta/build info).
+ * Optional — many tools don't need a footer; leave it out then.
+ *
+ *   <footer class="lc-shell-footer">
+ *     <div>© 2026 Lecturio</div>
+ *     <nav class="lc-shell-footer-links">
+ *       <a href="/imprint">Imprint</a>
+ *       <a href="/privacy">Privacy</a>
+ *     </nav>
+ *     <span class="lc-shell-footer-meta">v1.4.2</span>
+ *   </footer>
+ * ───────────────────────────────────────────────────────────────────────── */
+.lc-shell-footer {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 16px 32px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.lc-shell-footer > :nth-child(2) { flex: 1; display: flex; justify-content: center; }
+.lc-shell-footer > :last-child:not(:nth-child(2)) { margin-left: auto; }
+.lc-shell-footer-links {
+  display: flex;
+  gap: 16px;
+}
+.lc-shell-footer-links a {
+  color: var(--fg-muted);
+  text-decoration: none;
+  font-weight: 500;
+}
+.lc-shell-footer-links a:hover {
+  color: var(--fg);
+}
+.lc-shell-footer-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
