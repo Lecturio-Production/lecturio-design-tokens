@@ -183,6 +183,8 @@
   gap: 10px;
   box-shadow: var(--card-shadow);
   transition: transform 0.15s, box-shadow 0.2s;
+  /* Fill the grid/flex track so siblings line up to the same height. */
+  height: 100%;
 }
 .lc-card:hover {
   box-shadow: var(--card-shadow-hover);
@@ -292,6 +294,21 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
+}
+/* Make grid items themselves fill their row track, so the cards inside
+ * (which are height:100% relative to their parent) actually stretch. */
+.lc-card-grid > li {
+  display: flex;
+  flex-direction: column;
+}
+/* Link wrapper for clickable cards. Use as the single child of an <li>
+ * inside .lc-card-grid so the card stretches to the row height. */
+.lc-card-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* ─── Form block ─────────────────────────────────────────────────────────
