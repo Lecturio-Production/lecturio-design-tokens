@@ -19,9 +19,20 @@ The components are framework-agnostic regarding the router/image library: pass `
 |---|---|
 | `LcShell` | Top-level wrapper with the Lecturio body background. |
 | `LcShellMain` | Centered, padded main content area. |
-| `LcShellHeader` | The standard sticky top header: brand + nav + center slot + right slot. |
+| `LcShellHeader` | The standard sticky top header: brand + nav + center slot + right slot. The Lecturio logo is bundled — tools only need to pass `productName`. |
 | `LcShellFooter` | Optional bottom strip with three slots. Most tools won't need it. |
 | `LcPageHeader` | The eyebrow + title + sub + action pattern at the top of any list/detail page. |
+
+## The bundled logo
+
+`assets/logo.png` is the canonical Lecturio logo. `LcShellHeader` uses it by default — pass `brand={{ productName: "MyTool" }}` and you're done. Override via `brand.logoSrc` only if you really need a different image.
+
+The same URL is also exported as `lecturioLogoSrc` for use elsewhere in your tool (login splash, error pages, etc.):
+
+```tsx
+import { lecturioLogoSrc } from "../../design-tokens/react";
+<img src={lecturioLogoSrc} alt="Lecturio" />
+```
 
 ## Importing
 
@@ -56,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <LcShell>
       <LcShellHeader
-        brand={{ logoSrc: "/logo.svg", productName: "Orchestrator" }}
+        brand={{ productName: "Orchestrator" }}
         navItems={[
           { href: "/", label: "Dashboard", icon: LayoutGrid, isActive: isActive("/") },
           { href: "/projects", label: "Projects", icon: FolderKanban, isActive: isActive("/projects") },

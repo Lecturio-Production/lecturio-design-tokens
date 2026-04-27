@@ -6,10 +6,32 @@ import {
   type ImageLike,
   type LinkLike,
 } from "./types";
+import bundledLogo from "../assets/logo.png";
+
+/**
+ * The Lecturio logo is bundled with the design-tokens repo so every tool
+ * uses the same canonical asset without copying it around. Bundlers (Vite,
+ * Next.js, Webpack) hand back either a plain URL string or a static-image
+ * object with `.src` — normalize to a string here.
+ */
+const DEFAULT_LECTURIO_LOGO_SRC: string =
+  typeof bundledLogo === "string"
+    ? bundledLogo
+    : ((bundledLogo as unknown as { src: string }).src ?? "");
+
+/**
+ * Public re-export of the bundled Lecturio logo URL — useful when a tool
+ * needs to render the logo somewhere outside the standard header (login
+ * splash, footer, error page, etc.).
+ */
+export const lecturioLogoSrc: string = DEFAULT_LECTURIO_LOGO_SRC;
 
 export interface LcShellHeaderBrand {
-  /** Lecturio (or org) logo source. Required — the brand identity is the logo. */
-  logoSrc: string;
+  /**
+   * Override the Lecturio logo if you really need to. By default the
+   * canonical logo bundled with this design-tokens repo is used.
+   */
+  logoSrc?: string;
   /** Alt text for the logo. Defaults to "Lecturio". */
   logoAlt?: string;
   /**
@@ -87,7 +109,7 @@ export function LcShellHeader({
         className="lc-shell-brand"
       >
         <Image
-          src={brand.logoSrc}
+          src={brand.logoSrc ?? DEFAULT_LECTURIO_LOGO_SRC}
           alt={brand.logoAlt ?? "Lecturio"}
           width={120}
           height={28}

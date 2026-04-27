@@ -1,6 +1,7 @@
 export { LcShell, LcShellMain } from "./Shell";
 export {
   LcShellHeader,
+  lecturioLogoSrc,
   type LcShellHeaderProps,
   type LcShellHeaderBrand,
   type LcShellHeaderNavItem,

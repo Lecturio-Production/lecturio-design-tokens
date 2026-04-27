@@ -196,7 +196,7 @@ import { LcShell, LcShellMain, LcShellHeader, LcShellFooter } from "../../design
 
 <LcShell>
   <LcShellHeader
-    brand={{ logoSrc: "/logo.svg", productName: "Orchestrator" }}
+    brand={{ productName: "Orchestrator" }}
     navItems={[
       { href: "/library", label: "Library", icon: Library, isActive: true },
       { href: "/experimental", label: "Experimental", icon: Beaker },
