@@ -226,6 +226,27 @@
   font-size: 14px;
   line-height: 1.5;
 }
+/* Mono-styled time / metadata display, paired with a 14px icon. */
+.lc-card-duration {
+  font-family: var(--font-mono);
+  color: var(--fg-muted);
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lc-card-duration svg { width: 14px; height: 14px; }
+/* Two-line clamped description under the title. */
+.lc-card-objective {
+  color: var(--fg-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .lc-card-actions {
   display: flex;
   gap: 8px;

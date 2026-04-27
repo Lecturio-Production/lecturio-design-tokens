@@ -22,6 +22,8 @@ The components are framework-agnostic regarding the router/image library: pass `
 | `LcShellHeader` | The standard sticky top header: brand + nav + center slot + right slot. The Lecturio logo is bundled — tools only need to pass `productName`. |
 | `LcShellFooter` | Optional bottom strip with three slots. Most tools won't need it. |
 | `LcPageHeader` | The eyebrow + title + sub + action pattern at the top of any list/detail page. |
+| `LcCard` | The card primitive (drop shadow, no border, square corners). Optional `clickable` adds hover lift + keyboard a11y. |
+| `LcCardGrid` | Auto-fill 300px+ grid for stacking `LcCard`s. |
 
 ## The bundled logo
 
