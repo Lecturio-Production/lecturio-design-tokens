@@ -8,14 +8,17 @@ import {
 } from "./types";
 
 export interface LcShellHeaderBrand {
-  /** Display label, shown next to the logo. */
-  label: string;
+  /** Lecturio (or org) logo source. Required — the brand identity is the logo. */
+  logoSrc: string;
+  /** Alt text for the logo. Defaults to "Lecturio". */
+  logoAlt?: string;
+  /**
+   * Tool / product name shown after the logo, separated by a thin divider.
+   * E.g. "Orchestrator", "Scene Editor", "Slide Generator".
+   */
+  productName: string;
   /** Where clicking the brand takes you. Defaults to "/". */
   href?: string;
-  /** Optional logo source. If omitted, only the label is rendered. */
-  logoSrc?: string;
-  /** Alt text for the logo. Defaults to "" (decorative — label conveys meaning). */
-  logoAlt?: string;
 }
 
 export interface LcShellHeaderNavItem {
@@ -51,12 +54,12 @@ export interface LcShellHeaderProps {
 }
 
 /**
- * Standard Lecturio app-shell header. Three-zone layout:
+ * Standard Lecturio app-shell header. Brand pattern is:
  *
- *   [Brand] [Nav] [Center slot — flex:1] [Right slot]
+ *   [Logo] | [Product name]   [Nav]   [Center slot]   [Right slot]
  *
  *   <LcShellHeader
- *     brand={{ label: "Orchestrator", logoSrc: "/logo.svg" }}
+ *     brand={{ logoSrc: "/logo.svg", productName: "Orchestrator" }}
  *     navItems={[
  *       { href: "/", label: "Dashboard", icon: LayoutGrid, isActive: pathname === "/" },
  *       { href: "/projects", label: "Projects", icon: FolderKanban, isActive: pathname.startsWith("/projects") },
@@ -79,11 +82,19 @@ export function LcShellHeader({
 
   return (
     <header className="lc-shell-header">
-      <Link href={brand.href ?? "/"} className="lc-shell-brand">
-        {brand.logoSrc && (
-          <Image src={brand.logoSrc} alt={brand.logoAlt ?? ""} width={24} height={24} />
-        )}
-        <span>{brand.label}</span>
+      <Link
+        href={brand.href ?? "/"}
+        className="lc-shell-brand"
+      >
+        <Image
+          src={brand.logoSrc}
+          alt={brand.logoAlt ?? "Lecturio"}
+          width={120}
+          height={28}
+          className="lc-shell-brand-logo"
+        />
+        <span className="lc-shell-brand-divider" />
+        <span className="lc-shell-brand-product">{brand.productName}</span>
       </Link>
 
       {navItems.length > 0 && (

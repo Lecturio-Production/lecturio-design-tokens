@@ -187,6 +187,8 @@ Always pair empty state with a single primary action that resolves it.
 
 ### App shell
 
+**Brand pattern:** every Lecturio tool's header opens with the Lecturio logo + a thin divider + the tool's product name. The logo carries the brand identity; the product name disambiguates which tool you're in. The brand is a single link to the tool's home.
+
 **For React tools, prefer the ready-made components from `react/`** — they enforce the layout and accept slots for tool-specific content:
 
 ```tsx
@@ -194,7 +196,7 @@ import { LcShell, LcShellMain, LcShellHeader, LcShellFooter } from "../../design
 
 <LcShell>
   <LcShellHeader
-    brand={{ label: "MyTool", logoSrc: "/logo.svg" }}
+    brand={{ logoSrc: "/logo.svg", productName: "Orchestrator" }}
     navItems={[
       { href: "/library", label: "Library", icon: Library, isActive: true },
       { href: "/experimental", label: "Experimental", icon: Beaker },
@@ -214,7 +216,9 @@ The plain HTML version below is the same markup the React components produce —
 <div class="lc-shell">
   <header class="lc-shell-header">
     <a class="lc-shell-brand" href="/">
-      <img src="/logo.png" alt="" /> <span>Lecturio</span>
+      <img src="/logo.svg" alt="Lecturio" class="lc-shell-brand-logo" />
+      <span class="lc-shell-brand-divider"></span>
+      <span class="lc-shell-brand-product">Orchestrator</span>
     </a>
     <nav class="lc-shell-nav">
       <a class="lc-shell-nav-link is-active" href="/library">Library</a>

@@ -56,7 +56,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <LcShell>
       <LcShellHeader
-        brand={{ label: "Orchestrator", logoSrc: "/logo.svg" }}
+        brand={{ logoSrc: "/logo.svg", productName: "Orchestrator" }}
         navItems={[
           { href: "/", label: "Dashboard", icon: LayoutGrid, isActive: isActive("/") },
           { href: "/projects", label: "Projects", icon: FolderKanban, isActive: isActive("/projects") },

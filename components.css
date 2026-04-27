@@ -386,18 +386,37 @@
     0 2px 8px rgba(12, 20, 28, 0.04);
 }
 .lc-shell-brand {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 16px;
   letter-spacing: -0.01em;
   color: var(--fg);
   text-decoration: none;
+  transition: opacity 0.12s;
 }
 .lc-shell-brand:hover { opacity: 0.75; }
-.lc-shell-nav { display: flex; gap: 4px; }
+.lc-shell-brand:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+.lc-shell-brand-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+.lc-shell-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 6px;
+}
+.lc-shell-brand-product {
+  font-weight: 600;
+  color: var(--fg-muted);
+  font-size: 14px;
+}
+.lc-shell-nav { display: flex; gap: 4px; margin-left: 12px; }
 .lc-shell-nav-link {
   display: inline-flex;
   align-items: center;
