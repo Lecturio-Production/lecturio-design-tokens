@@ -6,18 +6,17 @@ import {
   type ImageLike,
   type LinkLike,
 } from "./types";
-import bundledLogo from "../assets/logo.png";
-
 /**
  * The Lecturio logo is bundled with the design-tokens repo so every tool
- * uses the same canonical asset without copying it around. Bundlers (Vite,
- * Next.js, Webpack) hand back either a plain URL string or a static-image
- * object with `.src` — normalize to a string here.
+ * uses the same canonical asset without copying it around. We resolve the
+ * URL via `import.meta.url` — works identically in Next.js (webpack asset
+ * modules) and Vite, returns a plain string, and needs no `.d.ts` plumbing
+ * for `*.png` imports on the consumer side.
  */
-const DEFAULT_LECTURIO_LOGO_SRC: string =
-  typeof bundledLogo === "string"
-    ? bundledLogo
-    : ((bundledLogo as unknown as { src: string }).src ?? "");
+const DEFAULT_LECTURIO_LOGO_SRC: string = new URL(
+  "../assets/logo.png",
+  import.meta.url
+).href;
 
 /**
  * Public re-export of the bundled Lecturio logo URL — useful when a tool
