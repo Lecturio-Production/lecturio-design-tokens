@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────────────
+# Lecturio design-tokens — Containerfile snippet.
+#
+# Drop these blocks into your tool's Containerfile to make the design-
+# tokens submodule available during the Docker build. Two parts:
+#
+#   1. Add `git` to apt installs in the builder stage (only needed once).
+#   2. After `COPY . .`, before any `npm run build` / `next build` /
+#      `vite build`: run the submodule init step. It tries the local
+#      submodule first (works if `.git` is in the build context) and
+#      falls back to a fresh public clone (works on Railway / CI where
+#      `git archive` strips `.git`).
+#
+# Verbatim copy-paste — adjust nothing unless you really need to.
+# ─────────────────────────────────────────────────────────────────────
+
+# (1) In the builder stage's apt-get install line, add `git`:
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git openssl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# (2) Place this block AFTER `COPY . .` and BEFORE any build step:
+RUN if [ ! -f design-tokens/tokens.css ]; then \
+      if [ -d .git ] && [ -f .gitmodules ]; then \
+        git submodule update --init --recursive; \
+      else \
+        git clone --depth 1 "https://github.com/Lecturio-Production/lecturio-design-tokens.git" design-tokens; \
+      fi; \
+    fi

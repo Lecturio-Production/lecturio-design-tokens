@@ -14,6 +14,10 @@ This repo is consumed as a **git submodule** in each tool. Pinning to a specific
 | `STYLEGUIDE.md` | Hard rules + component recipes. **Read this before writing UI.** |
 | `STACK.md` | Mandatory tech stack contract (React, Tailwind, Radix, Lucide). |
 | `preview.html` | Static preview of the components + tokens. Open in a browser. |
+| `templates/Containerfile.submodule-init` | Canonical Docker snippet for fetching the submodule on Railway / CI builds. Copy verbatim into your tool's `Containerfile`. |
+| `scripts/bootstrap-tool.sh` | One-shot tool setup. See "Attaching this repo to a tool". |
+| `scripts/check-compliance.sh` | Pre-push lint that verifies a tool follows the design-system contract. See below. |
+| `CHANGELOG.md` | All notable changes. Read before bumping the submodule pin. |
 
 ## Attaching this repo to a tool
 
@@ -80,11 +84,22 @@ git clone --recurse-submodules <tool-repo-url>
 git submodule update --init --recursive
 ```
 
+## Compliance check
+
+Verify a tool follows the design-system contract:
+
+```bash
+cd ~/code/<your-tool>
+bash <(curl -sL https://raw.githubusercontent.com/Lecturio-Production/lecturio-design-tokens/main/scripts/check-compliance.sh)
+```
+
+Checks: submodule present, `**Styling path:**` declared in `CLAUDE.md`, `tokens.css` and `components.css` imported, no CSS-in-JS dependencies, and (Path A only) Lecturio preset referenced in `tailwind.config.*`. Exit code 1 on any failure — wire it up as a pre-push hook to keep tools from drifting.
+
 ## Modifying the design system
 
 Changes happen here, in this repo. Push to `main`. Then bump the submodule pin in each consuming tool that should pick the change up. There is no global rollout.
 
-If the change is breaking (renamed token, removed `.lec-*` class, changed Tailwind preset shape), call it out in the commit message — consumers need to know what to migrate.
+**Every change adds an entry to [`CHANGELOG.md`](CHANGELOG.md)** (top of "Unreleased", or new dated section). Mark breaking changes with `🚨 breaking` and explain how consumers migrate — that's the file consuming-tool maintainers read before bumping the submodule pin.
 
 ## Local preview
 

@@ -79,7 +79,7 @@ The manual checklists below describe what the script does, in case you need to d
    @import "../../design-tokens/components.css";
    @tailwind base; @tailwind components; @tailwind utilities;
    ```
-5. Add the submodule-init block to your `Containerfile` (steal it from the orchestrator's `Containerfile`).
+5. Add the submodule-init block to your `Containerfile` — copy from `design-tokens/templates/Containerfile.submodule-init`.
 6. Install `lucide-react`, `@radix-ui/*` as you need them.
 7. Add to your tool's `CLAUDE.md`: `**Styling path:** Tailwind + Preset`.
 8. Read `STYLEGUIDE.md` before writing any UI.
