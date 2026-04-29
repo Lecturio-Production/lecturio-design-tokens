@@ -8,12 +8,39 @@ If you're an AI agent: read this entire file before generating UI. Apply the pat
 
 ## Files
 
-- **`tokens.css`** — CSS custom properties: colors, shadows, typography, radii. Import in your app's stylesheet (gives runtime access to `var(--primary)` etc. for the `.lec-*` primitives and any plain CSS).
-- **`tailwind-preset.cjs`** — Tailwind preset that wires the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Add it to your `tailwind.config.ts` `presets` array.
-- **`components.css`** — Reusable component primitives (`.lec-btn`, `.lec-card`, `.lec-form-block`, `.lec-shell-header`, `.lec-shell-footer`, etc.). Import after Tailwind so `@layer components` ordering is correct.
-- **`react/`** — Source-only React components for the most-used patterns (`LecShell`, `LecShellHeader`, `LecShellFooter`, `LecPageHeader`). Import directly from the submodule. See `react/README.md`.
+- **`tokens.css`** — CSS custom properties: colors, shadows, typography, radii. Import in your app's stylesheet (gives runtime access to `var(--primary)` etc. for the `.lec-*` primitives and any plain CSS). Used by **both** styling paths.
+- **`tailwind-preset.cjs`** — Tailwind preset that wires the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Used **only by Path A**.
+- **`components.css`** — Reusable component primitives (`.lec-btn`, `.lec-card`, `.lec-form-block`, `.lec-shell-header`, `.lec-shell-footer`, etc.). Used by **both** paths.
+- **`react/`** — Source-only React components for the most-used patterns (`LecShell`, `LecShellHeader`, `LecShellFooter`, `LecPageHeader`, `LecCard`). Import directly from the submodule. See `react/README.md`.
 - **`STYLEGUIDE.md`** — This document. Rules + recipes.
-- **`STACK.md`** — The mandatory tech stack contract (React, Tailwind version, Radix, Lucide, …).
+- **`STACK.md`** — The tech stack contract (React, Tailwind version, Radix, Lucide, plus the two sanctioned styling paths).
+
+For full setup instructions for each path, see "Two sanctioned styling paths" below.
+
+---
+
+## Hard rules
+
+These are not preferences. Violating them is a bug.
+
+1. **Brand tokens are mandatory.** Colors, radii, fonts come from `tokens.css` (`var(--*)`) or the `lecturioPreset` (Tailwind path). Tool-local brand values are forbidden.
+2. **Pick one of the two sanctioned styling paths** — see "Two sanctioned styling paths" below. Mixing them inside a single tool is forbidden; commit to one per codebase and document it in the tool's `CLAUDE.md`.
+3. **CSS-in-JS is forbidden** on both paths (styled-components, emotion, vanilla-extract). Even "just for one component." Plain CSS modules / app-local CSS files are fine.
+4. **Primary color is `#59a831` (Lecturio Green).** Use `bg-primary`/`text-primary` (Tailwind) or `var(--primary)` (raw CSS). Never introduce another brand color.
+5. **All radii are zero.** Square corners only. Tailwind's `rounded-*` utilities all resolve to `0`; raw CSS uses `0` directly. The exception: `rounded-full` (or `border-radius: 50%`) is preserved for genuinely circular elements like avatars.
+6. **Cards have no border.** Elevation comes from `shadow-card` (Tailwind) or `var(--card-shadow)` (raw). Inputs and buttons have borders; cards do not.
+7. **Noto Sans is the only font.** Loaded automatically by `tokens.css`. Tailwind's `font-sans` / `font-display` / `font-mono` all map to the right family.
+8. **No emojis as icons.** Use Lucide React (`lucide-react`) for every icon. Default size is `16px`; large CTAs use `18px`. Stroke width is the Lucide default.
+
+---
+
+## Two sanctioned styling paths
+
+A tool picks **one** path and sticks to it. Document the choice on the first line of the tool's `CLAUDE.md`.
+
+### Path A: Tailwind + Preset (default)
+
+Use this for **Next.js apps and any Vite tool that already has a build pipeline**. The Tailwind preset wires the brand tokens into shadcn-style utility names; you compose UI with utility classes and the `.lec-*` primitives.
 
 ```ts
 // tailwind.config.ts
@@ -22,7 +49,7 @@ import lecturioPreset from "./design-tokens/tailwind-preset.cjs";
 
 const config: Config = {
   presets: [lecturioPreset],
-  content: [/* your file globs */],
+  content: ["./src/**/*.{ts,tsx,js,jsx,mdx}"],
 };
 export default config;
 ```
@@ -37,19 +64,44 @@ export default config;
 @tailwind utilities;
 ```
 
+Then write JSX with utility classes plus the `.lec-*` primitives:
+
+```tsx
+<button className="lec-btn lec-btn--primary"><Plus size={16} /> New</button>
+<div className="flex items-center gap-3">…</div>
+```
+
+You get: Tailwind utilities, the Lecturio Tailwind preset, the `Lec*` React shell components, all `.lec-*` primitives, plus runtime access to `var(--*)`.
+
+### Path B: Plain CSS + tokens.css (lightweight)
+
+Use this for **Vite SPAs that don't want a Tailwind build, prototype tools, embedded renderers, or any case where the Tailwind cost isn't worth it**. You import `tokens.css` + `components.css` and style app-local rules with raw CSS that references the tokens.
+
+```css
+/* src/App.css (or your main stylesheet) */
+@import "../design-tokens/tokens.css";
+@import "../design-tokens/components.css";
+
+/* Then style your tool with var(--*) refs — never hardcode brand values */
+.my-layout {
+  background: var(--bg-subtle);
+  color: var(--fg);
+  padding: 24px;
+}
+.my-layout h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+```
+
+You get: all design tokens as CSS custom properties, all `.lec-*` component primitives, the bundled Noto Sans font.
+
+You don't get: Tailwind utilities (`flex gap-2 bg-primary` etc.), the `lecturioPreset`, the `Lec*` React shell components (those use `import.meta.url` — works in Vite, but you still need to opt in by importing them).
+
+Pick this path consciously. Don't add Tailwind later "just for one section" — that's a Path A migration, not a free upgrade.
+
 ---
-
-## Hard rules
-
-These are not preferences. Violating them is a bug.
-
-1. **Tailwind is the styling layer.** Compose UI with Tailwind utility classes and the `.lec-*` component primitives. No CSS-in-JS (styled-components, emotion, vanilla-extract). Plain CSS modules are allowed for app-local rules that the tokens don't cover, but the brand-tokenized utilities should always be the first reach.
-2. **Use the Lecturio Tailwind preset.** Every consuming tool's `tailwind.config.ts` includes `lecturioPreset` in `presets`. Do not redefine colors, fonts, radii locally — extend through the preset only.
-3. **Primary color is `#59a831` (Lecturio Green).** Use `bg-primary`/`text-primary` (Tailwind) or `var(--primary)` (raw CSS). Do not introduce another brand color.
-4. **All radii are zero.** Square corners only. Tailwind's `rounded-*` utilities all resolve to `0`. The exception: `rounded-full` is preserved (9999px) for genuinely circular elements like avatars.
-5. **Cards have no border.** Elevation comes from `shadow-card` (Tailwind) or `var(--card-shadow)` (raw). Inputs and buttons have borders; cards do not.
-6. **Noto Sans is the only font.** Loaded automatically by `tokens.css`. Tailwind's `font-sans` / `font-display` / `font-mono` all map to the right family.
-7. **No emojis as icons.** Use Lucide React (`lucide-react`) for every icon. Default size is `16px`; large CTAs use `18px`. Stroke width is the Lucide default.
 
 ---
 
@@ -290,9 +342,11 @@ Don't introduce sizes between these stops.
 
 ## What NOT to do
 
-- ❌ Round corners (`rounded-md`, `border-radius: 8px`) — Tailwind preset already collapses these
-- ❌ CSS-in-JS (styled-components, emotion, vanilla-extract) — even "just for one component"
-- ❌ Local Tailwind color overrides — extend the preset upstream instead
+- ❌ Round corners (`rounded-md`, `border-radius: 8px`) — Tailwind preset already collapses these on Path A; raw CSS uses `0` directly on Path B
+- ❌ CSS-in-JS (styled-components, emotion, vanilla-extract) — even "just for one component", forbidden on **both paths**
+- ❌ Local Tailwind color overrides (Path A) — extend the preset upstream instead
+- ❌ Hardcoded brand values in CSS (Path B) — always use `var(--primary)`, `var(--fg)`, etc.
+- ❌ Mixing Path A (Tailwind) and Path B (Plain CSS) inside one tool — pick one per codebase
 - ❌ Emojis as functional icons (decoration in slide content is fine)
 - ❌ Drop-shadow on buttons that already have a brand-shadow (no double shadows)
 - ❌ Borders + box-shadows on the same card
@@ -306,10 +360,12 @@ Don't introduce sizes between these stops.
 
 When generating UI in any Lecturio tool:
 
-1. **The stack is fixed. See `STACK.md`.** React + Tailwind + Radix + Lucide. Don't propose alternatives.
-2. **Always import the Lecturio Tailwind preset** in `tailwind.config.ts` and `tokens.css` + `components.css` in the app's main stylesheet. If they're not wired up, fix that first before generating any other UI.
-3. **Compose with `lec-`-prefixed primitives whenever possible.** If you find yourself writing a button style, stop — use `.lec-btn` + a variant. If you need a layout primitive that doesn't exist, propose it as a new `.lec-*` class upstream rather than ad-hoc styling.
-4. **Read this STYLEGUIDE.md and `STACK.md` before writing any UI.**
-5. **When in doubt about a value (color, spacing, font-size), use Tailwind utilities first, then `var(--*)` tokens.** Don't invent.
-6. **App-specific styles go in the consuming app's CSS, not in this design system.** Tool-specific layouts (e.g. `.editor-layout`, `.scene-grid`) belong in the app, not here.
-7. **If the request needs something that doesn't fit any pattern here**, surface that explicitly. The right answer might be to extend `components.css` or the preset upstream rather than creating a one-off in the consuming app.
+1. **Check the tool's styling path first.** Open the tool's `CLAUDE.md` and find the `**Styling path:**` line. If it says "Tailwind + Preset" → Path A. If it says "Plain CSS + tokens.css" → Path B. If neither line exists, ask before guessing.
+2. **The stack is fixed. See `STACK.md`.** React + Radix + Lucide on both paths. Don't propose alternatives.
+3. **Path A: always import the Lecturio Tailwind preset** in `tailwind.config.ts` and `tokens.css` + `components.css` in the app's main stylesheet. If they're not wired up, fix that first.
+4. **Path B: always import `tokens.css` + `components.css`** in the app's main stylesheet. Use `var(--*)` for any custom CSS. Never hardcode brand values.
+5. **Compose with `lec-`-prefixed primitives whenever possible** (works on both paths). If you find yourself writing a button style, stop — use `.lec-btn` + a variant. If you need a layout primitive that doesn't exist, propose it as a new `.lec-*` class upstream rather than ad-hoc styling.
+6. **Read this STYLEGUIDE.md and `STACK.md` before writing any UI.**
+7. **When in doubt about a value (color, spacing, font-size), use the design tokens.** Path A: Tailwind utilities backed by the preset. Path B: `var(--*)` directly. Don't invent.
+8. **App-specific styles go in the consuming app's CSS, not in this design system.** Tool-specific layouts (e.g. `.editor-layout`, `.scene-grid`) belong in the app, not here.
+9. **If the request needs something that doesn't fit any pattern here**, surface that explicitly. The right answer might be to extend `components.css` or the preset upstream rather than creating a one-off in the consuming app.

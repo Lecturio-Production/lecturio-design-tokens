@@ -12,7 +12,7 @@ The point: a developer moving from one tool to another should find familiar bone
 |---|---|---|
 | **Framework** | React 19 | Either Next.js (App Router) for full-stack tools or Vite + React Router for pure-frontend tools. Pick based on whether you need SSR/server actions/route handlers. |
 | **Language** | TypeScript, `strict: true` | Plain JS is not allowed in shipped code. |
-| **Styling** | Tailwind CSS (v3.x) + this design-tokens repo | Tailwind utility classes for layout and incidental spacing. `.lec-*` primitives from `components.css` for component-level patterns. No CSS-in-JS, no styled-components, no emotion, no vanilla-extract. |
+| **Styling** | Default: Tailwind CSS (v3.x) + this design-tokens repo. Alternative: Plain CSS + `tokens.css` (allowed for lightweight Vite SPAs, prototypes, embedded renderers). | Two sanctioned paths — see `STYLEGUIDE.md` "Two sanctioned styling paths". CSS-in-JS (styled-components, emotion, vanilla-extract) is forbidden in **both** paths. |
 | **Shell components** | `design-tokens/react/` (`LecShell`, `LecShellHeader`, `LecShellFooter`, `LecPageHeader`) | Source-only React components for the standard app frame. Don't roll your own header — wire up the existing one with your tool's `navItems` and slots. |
 | **UI primitives** | Radix UI primitives (unstyled) | Use Radix for dialogs, dropdowns, tooltips, popovers, etc. Style them with Tailwind utilities and the design-tokens. shadcn/ui as a starting point is fine; tokens-from-this-repo override its defaults. |
 | **Icons** | Lucide React (`lucide-react`) | Default size 16px. No emojis, no SVG-by-hand for stock icons, no FontAwesome, no Material Icons. |
@@ -41,8 +41,9 @@ The point: a developer moving from one tool to another should find familiar bone
 
 - **Vue, Svelte, SolidJS** for tool UIs (we standardize on React).
 - **Tailwind v4** until the design-tokens preset has been validated against it.
-- **CSS-in-JS** in any form. Even "just for one component."
-- **Tool-local color/typography overrides.** Extend the preset upstream, in this repo.
+- **CSS-in-JS** in any form (styled-components, emotion, vanilla-extract). Forbidden on both Path A (Tailwind) and Path B (Plain CSS). Even "just for one component."
+- **Tool-local color/typography overrides.** Extend the preset (Path A) or add to `components.css` upstream (Path B) — never hardcode brand values per tool.
+- **Mixing Path A and Path B inside one tool.** Pick one per codebase.
 
 ---
 
@@ -53,6 +54,10 @@ Open a discussion in the Lecturio dev channel before deviating. The default answ
 ---
 
 ## Bootstrapping a new tool — checklist
+
+Pick the styling path first (default: A). Then follow the matching steps.
+
+### Path A: Tailwind + Preset (default)
 
 1. `npx create-next-app@latest` (or `npm create vite@latest` for Vite tools) — TypeScript, Tailwind.
 2. `git submodule add https://github.com/Lecturio-Production/lecturio-design-tokens.git design-tokens`
@@ -69,6 +74,23 @@ Open a discussion in the Lecturio dev channel before deviating. The default answ
    ```
 5. Add the submodule-init block to your `Containerfile` (steal it from the orchestrator's `Containerfile`).
 6. Install `lucide-react`, `@radix-ui/*` as you need them.
-7. Read `STYLEGUIDE.md` before writing any UI.
+7. Add to your tool's `CLAUDE.md`: `**Styling path:** Tailwind + Preset`.
+8. Read `STYLEGUIDE.md` before writing any UI.
 
-If the result looks like a Lecturio tool out of the box, you did it right. If it doesn't, something's miswired — usually the preset isn't being loaded.
+### Path B: Plain CSS + tokens.css (lightweight)
+
+Use when: Vite SPA without Tailwind build, prototype tool, embedded renderer.
+
+1. `npm create vite@latest` (TypeScript template).
+2. `git submodule add https://github.com/Lecturio-Production/lecturio-design-tokens.git design-tokens`
+3. In your main stylesheet (e.g. `src/App.css`):
+   ```css
+   @import "../design-tokens/tokens.css";
+   @import "../design-tokens/components.css";
+   ```
+4. Style app-local rules with `var(--*)` tokens — never hardcode brand values.
+5. Install `lucide-react` for icons.
+6. Add to your tool's `CLAUDE.md`: `**Styling path:** Plain CSS + tokens.css (no Tailwind)`.
+7. Read `STYLEGUIDE.md` (Path B section) before writing any UI.
+
+If the result looks like a Lecturio tool out of the box, you did it right. If it doesn't, something's miswired — usually the preset isn't being loaded (Path A) or `tokens.css` isn't imported (Path B).
