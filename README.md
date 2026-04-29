@@ -10,7 +10,7 @@ This repo is consumed as a **git submodule** in each tool. Pinning to a specific
 |---|---|
 | `tokens.css` | CSS custom properties (colors, shadows, typography) + Noto Sans loader. Imported in the consuming app's main stylesheet for runtime access via `var(--*)`. |
 | `tailwind-preset.cjs` | Tailwind preset wiring the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Added to each tool's `tailwind.config.ts` `presets` array. |
-| `components.css` | `.lc-*` component primitives (button, card, page-header, form-block, app-shell). |
+| `components.css` | `.lec-*` component primitives (button, card, page-header, form-block, app-shell). |
 | `STYLEGUIDE.md` | Hard rules + component recipes. **Read this before writing UI.** |
 | `STACK.md` | Mandatory tech stack contract (React, Tailwind, Radix, Lucide). |
 | `preview.html` | Static preview of the components + tokens. Open in a browser. |
@@ -73,7 +73,7 @@ git submodule update --init --recursive
 
 Changes happen here, in this repo. Push to `main`. Then bump the submodule pin in each consuming tool that should pick the change up. There is no global rollout.
 
-If the change is breaking (renamed token, removed `.lc-*` class, changed Tailwind preset shape), call it out in the commit message — consumers need to know what to migrate.
+If the change is breaking (renamed token, removed `.lec-*` class, changed Tailwind preset shape), call it out in the commit message — consumers need to know what to migrate.
 
 ## Local preview
 

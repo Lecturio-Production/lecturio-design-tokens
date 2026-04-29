@@ -17,17 +17,17 @@ The components are framework-agnostic regarding the router/image library: pass `
 
 | Component | Purpose |
 |---|---|
-| `LcShell` | Top-level wrapper with the Lecturio body background. |
-| `LcShellMain` | Centered, padded main content area. |
-| `LcShellHeader` | The standard sticky top header: brand + nav + center slot + right slot. The Lecturio logo is bundled — tools only need to pass `productName`. |
-| `LcShellFooter` | Optional bottom strip with three slots. Most tools won't need it. |
-| `LcPageHeader` | The eyebrow + title + sub + action pattern at the top of any list/detail page. |
-| `LcCard` | The card primitive (drop shadow, no border, square corners). Optional `clickable` adds hover lift + keyboard a11y. |
-| `LcCardGrid` | Auto-fill 300px+ grid for stacking `LcCard`s. |
+| `LecShell` | Top-level wrapper with the Lecturio body background. |
+| `LecShellMain` | Centered, padded main content area. |
+| `LecShellHeader` | The standard sticky top header: brand + nav + center slot + right slot. The Lecturio logo is bundled — tools only need to pass `productName`. |
+| `LecShellFooter` | Optional bottom strip with three slots. Most tools won't need it. |
+| `LecPageHeader` | The eyebrow + title + sub + action pattern at the top of any list/detail page. |
+| `LecCard` | The card primitive (drop shadow, no border, square corners). Optional `clickable` adds hover lift + keyboard a11y. |
+| `LecCardGrid` | Auto-fill 300px+ grid for stacking `LecCard`s. |
 
 ## The bundled logo
 
-`assets/logo.png` is the canonical Lecturio logo. `LcShellHeader` uses it by default — pass `brand={{ productName: "MyTool" }}` and you're done. Override via `brand.logoSrc` only if you really need a different image.
+`assets/logo.png` is the canonical Lecturio logo. `LecShellHeader` uses it by default — pass `brand={{ productName: "MyTool" }}` and you're done. Override via `brand.logoSrc` only if you really need a different image.
 
 The same URL is also exported as `lecturioLogoSrc` for use elsewhere in your tool (login splash, error pages, etc.):
 
@@ -40,11 +40,11 @@ import { lecturioLogoSrc } from "../../design-tokens/react";
 
 ```ts
 import {
-  LcShell,
-  LcShellMain,
-  LcShellHeader,
-  LcShellFooter,
-  LcPageHeader,
+  LecShell,
+  LecShellMain,
+  LecShellHeader,
+  LecShellFooter,
+  LecPageHeader,
 } from "../../design-tokens/react";
 ```
 
@@ -59,7 +59,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LayoutGrid, FolderKanban, Boxes, Wrench } from "lucide-react";
-import { LcShell, LcShellMain, LcShellHeader } from "../../design-tokens/react";
+import { LecShell, LecShellMain, LecShellHeader } from "../../design-tokens/react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -67,8 +67,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <LcShell>
-      <LcShellHeader
+    <LecShell>
+      <LecShellHeader
         brand={{ productName: "Orchestrator" }}
         navItems={[
           { href: "/", label: "Dashboard", icon: LayoutGrid, isActive: isActive("/") },
@@ -80,8 +80,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         LinkComponent={Link}
         ImageComponent={Image}
       />
-      <LcShellMain>{children}</LcShellMain>
-    </LcShell>
+      <LecShellMain>{children}</LecShellMain>
+    </LecShell>
   );
 }
 ```

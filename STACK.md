@@ -12,8 +12,8 @@ The point: a developer moving from one tool to another should find familiar bone
 |---|---|---|
 | **Framework** | React 19 | Either Next.js (App Router) for full-stack tools or Vite + React Router for pure-frontend tools. Pick based on whether you need SSR/server actions/route handlers. |
 | **Language** | TypeScript, `strict: true` | Plain JS is not allowed in shipped code. |
-| **Styling** | Tailwind CSS (v3.x) + this design-tokens repo | Tailwind utility classes for layout and incidental spacing. `.lc-*` primitives from `components.css` for component-level patterns. No CSS-in-JS, no styled-components, no emotion, no vanilla-extract. |
-| **Shell components** | `design-tokens/react/` (`LcShell`, `LcShellHeader`, `LcShellFooter`, `LcPageHeader`) | Source-only React components for the standard app frame. Don't roll your own header — wire up the existing one with your tool's `navItems` and slots. |
+| **Styling** | Tailwind CSS (v3.x) + this design-tokens repo | Tailwind utility classes for layout and incidental spacing. `.lec-*` primitives from `components.css` for component-level patterns. No CSS-in-JS, no styled-components, no emotion, no vanilla-extract. |
+| **Shell components** | `design-tokens/react/` (`LecShell`, `LecShellHeader`, `LecShellFooter`, `LecPageHeader`) | Source-only React components for the standard app frame. Don't roll your own header — wire up the existing one with your tool's `navItems` and slots. |
 | **UI primitives** | Radix UI primitives (unstyled) | Use Radix for dialogs, dropdowns, tooltips, popovers, etc. Style them with Tailwind utilities and the design-tokens. shadcn/ui as a starting point is fine; tokens-from-this-repo override its defaults. |
 | **Icons** | Lucide React (`lucide-react`) | Default size 16px. No emojis, no SVG-by-hand for stock icons, no FontAwesome, no Material Icons. |
 | **Fonts** | Noto Sans (variable) | Loaded automatically by `tokens.css` from Google Fonts. Don't add custom font loaders. |

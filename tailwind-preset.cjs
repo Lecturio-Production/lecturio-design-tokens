@@ -4,7 +4,7 @@
  * Drop this preset into a tool's `tailwind.config.ts` and the Lecturio
  * brand (colors, radii, fonts, shadows) is wired up automatically. Pair
  * with `tokens.css` (CSS custom properties + Noto Sans loader) so the
- * `.lc-*` component primitives in `components.css` resolve too.
+ * `.lec-*` component primitives in `components.css` resolve too.
  *
  * Usage:
  *

@@ -25,7 +25,7 @@ const DEFAULT_LECTURIO_LOGO_SRC: string = new URL(
  */
 export const lecturioLogoSrc: string = DEFAULT_LECTURIO_LOGO_SRC;
 
-export interface LcShellHeaderBrand {
+export interface LecShellHeaderBrand {
   /**
    * Override the Lecturio logo if you really need to. By default the
    * canonical logo bundled with this design-tokens repo is used.
@@ -42,7 +42,7 @@ export interface LcShellHeaderBrand {
   href?: string;
 }
 
-export interface LcShellHeaderNavItem {
+export interface LecShellHeaderNavItem {
   href: string;
   label: string;
   /** Lucide icon component, e.g. `LayoutGrid`. Pass as a reference, not JSX. */
@@ -54,10 +54,10 @@ export interface LcShellHeaderNavItem {
   isActive?: boolean;
 }
 
-export interface LcShellHeaderProps {
-  brand: LcShellHeaderBrand;
+export interface LecShellHeaderProps {
+  brand: LecShellHeaderBrand;
   /** Top-level navigation items, rendered with icon + label pills. */
-  navItems?: LcShellHeaderNavItem[];
+  navItems?: LecShellHeaderNavItem[];
   /**
    * Slot in the horizontal center. Use for tool-specific UI like a
    * step-nav, search input, or breadcrumbs. Empty by default.
@@ -79,7 +79,7 @@ export interface LcShellHeaderProps {
  *
  *   [Logo] | [Product name]   [Nav]   [Center slot]   [Right slot]
  *
- *   <LcShellHeader
+ *   <LecShellHeader
  *     brand={{ logoSrc: "/logo.svg", productName: "Orchestrator" }}
  *     navItems={[
  *       { href: "/", label: "Dashboard", icon: LayoutGrid, isActive: pathname === "/" },
@@ -90,41 +90,41 @@ export interface LcShellHeaderProps {
  *     ImageComponent={NextImage}
  *   />
  */
-export function LcShellHeader({
+export function LecShellHeader({
   brand,
   navItems = [],
   centerSlot,
   rightSlot,
   LinkComponent = DefaultLink,
   ImageComponent = DefaultImage,
-}: LcShellHeaderProps) {
+}: LecShellHeaderProps) {
   const Link = LinkComponent;
   const Image = ImageComponent;
 
   return (
-    <header className="lc-shell-header">
+    <header className="lec-shell-header">
       <Link
         href={brand.href ?? "/"}
-        className="lc-shell-brand"
+        className="lec-shell-brand"
       >
         <Image
           src={brand.logoSrc ?? DEFAULT_LECTURIO_LOGO_SRC}
           alt={brand.logoAlt ?? "Lecturio"}
           width={120}
           height={28}
-          className="lc-shell-brand-logo"
+          className="lec-shell-brand-logo"
         />
-        <span className="lc-shell-brand-divider" />
-        <span className="lc-shell-brand-product">{brand.productName}</span>
+        <span className="lec-shell-brand-divider" />
+        <span className="lec-shell-brand-product">{brand.productName}</span>
       </Link>
 
       {navItems.length > 0 && (
-        <nav className="lc-shell-nav">
+        <nav className="lec-shell-nav">
           {navItems.map((item) => {
             const Icon = item.icon;
             const cls = item.isActive
-              ? "lc-shell-nav-link is-active"
-              : "lc-shell-nav-link";
+              ? "lec-shell-nav-link is-active"
+              : "lec-shell-nav-link";
             return (
               <Link key={item.href} href={item.href} className={cls}>
                 <Icon size={16} />
@@ -136,7 +136,7 @@ export function LcShellHeader({
       )}
 
       <div
-        className="lc-shell-spacer"
+        className="lec-shell-spacer"
         style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >
         {centerSlot}

@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 
-export interface LcCardProps {
+export interface LecCardProps {
   /**
-   * Adds the `lc-card--clickable` modifier — visual hover lift + cursor.
+   * Adds the `lec-card--clickable` modifier — visual hover lift + cursor.
    * The component itself attaches no handlers; wrap it in a `<Link>` (or
    * a `<button>`) to make it actually interactive.
    */
   clickable?: boolean;
-  /** Additional class names to compose on top of the base `lc-card`. */
+  /** Additional class names to compose on top of the base `lec-card`. */
   className?: string;
   /** ID for accessibility / scroll-to. */
   id?: string;
@@ -16,42 +16,42 @@ export interface LcCardProps {
 
 /**
  * The Lecturio card primitive — drop shadow, no border, square corners.
- * Compose sub-elements via the matching CSS classes (`.lc-card-head`,
- * `.lc-card-title`, `.lc-card-sub`, `.lc-card-actions`, `.lc-card-footer`).
+ * Compose sub-elements via the matching CSS classes (`.lec-card-head`,
+ * `.lec-card-title`, `.lec-card-sub`, `.lec-card-actions`, `.lec-card-footer`).
  *
  * Static card:
  *
- *   <LcCard>
- *     <h3 className="lc-card-title">…</h3>
- *     <p className="lc-card-sub">…</p>
- *   </LcCard>
+ *   <LecCard>
+ *     <h3 className="lec-card-title">…</h3>
+ *     <p className="lec-card-sub">…</p>
+ *   </LecCard>
  *
  * Clickable card — wrap in a Link so the host's router handles navigation
  * AND keyboard accessibility comes for free:
  *
  *   <Link href={`/pipeline/${p.id}`}>
- *     <LcCard clickable>
- *       <h3 className="lc-card-title">{p.name}</h3>
- *     </LcCard>
+ *     <LecCard clickable>
+ *       <h3 className="lec-card-title">{p.name}</h3>
+ *     </LecCard>
  *   </Link>
  *
  * For a card that triggers an in-page action (no navigation), wrap in a
  * `<button>` instead:
  *
  *   <button onClick={open}>
- *     <LcCard clickable>…</LcCard>
+ *     <LecCard clickable>…</LecCard>
  *   </button>
  *
  * The component is server-component-safe — it attaches no event handlers
  * itself, so it composes cleanly with Server Components.
  */
-export function LcCard({
+export function LecCard({
   clickable = false,
   className,
   id,
   children,
-}: LcCardProps) {
-  const baseClass = clickable ? "lc-card lc-card--clickable" : "lc-card";
+}: LecCardProps) {
+  const baseClass = clickable ? "lec-card lec-card--clickable" : "lec-card";
   const finalClass = className ? `${baseClass} ${className}` : baseClass;
 
   return (
@@ -61,23 +61,23 @@ export function LcCard({
   );
 }
 
-export interface LcCardGridProps {
+export interface LecCardGridProps {
   children: ReactNode;
   /** Optional className to append. */
   className?: string;
 }
 
 /**
- * Auto-fill grid that places `LcCard`s into 300px+ columns with consistent
+ * Auto-fill grid that places `LecCard`s into 300px+ columns with consistent
  * gaps. Use as the direct parent of multiple cards.
  *
- *   <LcCardGrid>
- *     {pipelines.map(p => <li key={p.id}><Link><LcCard clickable>…</LcCard></Link></li>)}
- *   </LcCardGrid>
+ *   <LecCardGrid>
+ *     {pipelines.map(p => <li key={p.id}><Link><LecCard clickable>…</LecCard></Link></li>)}
+ *   </LecCardGrid>
  */
-export function LcCardGrid({ children, className }: LcCardGridProps) {
+export function LecCardGrid({ children, className }: LecCardGridProps) {
   return (
-    <ul className={className ? `lc-card-grid ${className}` : "lc-card-grid"}>
+    <ul className={className ? `lec-card-grid ${className}` : "lec-card-grid"}>
       {children}
     </ul>
   );

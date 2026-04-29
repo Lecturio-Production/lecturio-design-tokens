@@ -1,18 +1,18 @@
-export { LcShell, LcShellMain } from "./Shell";
+export { LecShell, LecShellMain } from "./Shell";
 export {
-  LcShellHeader,
+  LecShellHeader,
   lecturioLogoSrc,
-  type LcShellHeaderProps,
-  type LcShellHeaderBrand,
-  type LcShellHeaderNavItem,
+  type LecShellHeaderProps,
+  type LecShellHeaderBrand,
+  type LecShellHeaderNavItem,
 } from "./Header";
-export { LcShellFooter, type LcShellFooterProps } from "./Footer";
-export { LcPageHeader, type LcPageHeaderProps } from "./PageHeader";
+export { LecShellFooter, type LecShellFooterProps } from "./Footer";
+export { LecPageHeader, type LecPageHeaderProps } from "./PageHeader";
 export {
-  LcCard,
-  LcCardGrid,
-  type LcCardProps,
-  type LcCardGridProps,
+  LecCard,
+  LecCardGrid,
+  type LecCardProps,
+  type LecCardGridProps,
 } from "./Card";
 export {
   DefaultLink,

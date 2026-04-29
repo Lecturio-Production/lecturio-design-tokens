@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export interface LcPageHeaderProps {
+export interface LecPageHeaderProps {
   /**
    * Small uppercase label above the title (e.g. "Library", "Settings").
    * 12px, primary color, letter-spaced.
@@ -21,25 +21,25 @@ export interface LcPageHeaderProps {
  * Standard top-of-page header. Use at the top of every list/index/detail
  * page. Eyebrow + title + sub on the left, action button on the right.
  *
- *   <LcPageHeader
+ *   <LecPageHeader
  *     eyebrow="Library"
  *     title="Narrated Scenes"
  *     sub="One sentence, plain language, what this page is for."
- *     rightSlot={<button className="lc-btn lc-btn--primary">Neue Scene</button>}
+ *     rightSlot={<button className="lec-btn lec-btn--primary">Neue Scene</button>}
  *   />
  */
-export function LcPageHeader({
+export function LecPageHeader({
   eyebrow,
   title,
   sub,
   rightSlot,
-}: LcPageHeaderProps) {
+}: LecPageHeaderProps) {
   return (
-    <header className="lc-page-header">
+    <header className="lec-page-header">
       <div>
-        {eyebrow && <div className="lc-eyebrow">{eyebrow}</div>}
-        <h1 className="lc-page-title">{title}</h1>
-        {sub && <p className="lc-page-sub">{sub}</p>}
+        {eyebrow && <div className="lec-eyebrow">{eyebrow}</div>}
+        <h1 className="lec-page-title">{title}</h1>
+        {sub && <p className="lec-page-sub">{sub}</p>}
       </div>
       {rightSlot}
     </header>
