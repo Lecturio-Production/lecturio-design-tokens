@@ -17,6 +17,17 @@ This repo is consumed as a **git submodule** in each tool. Pinning to a specific
 
 ## Attaching this repo to a tool
 
+### One-shot bootstrap (recommended)
+
+```bash
+cd ~/code/<your-tool>
+bash <(curl -sL https://raw.githubusercontent.com/Lecturio-Production/lecturio-design-tokens/main/scripts/bootstrap-tool.sh)
+```
+
+The script adds the submodule, asks you for a styling path (A: Tailwind + Preset, B: Plain CSS + tokens.css), patches your main stylesheet, and writes the styling-path declaration into the tool's `CLAUDE.md`. Idempotent — safe to re-run.
+
+### Manual
+
 ```bash
 cd ~/code/<your-tool>
 git submodule add https://github.com/Lecturio-Production/lecturio-design-tokens.git design-tokens

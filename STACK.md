@@ -55,7 +55,14 @@ Open a discussion in the Lecturio dev channel before deviating. The default answ
 
 ## Bootstrapping a new tool — checklist
 
-Pick the styling path first (default: A). Then follow the matching steps.
+The fastest path is the bootstrap script — it adds the submodule, picks a path interactively, patches your stylesheet, and writes the `**Styling path:**` line into your `CLAUDE.md`:
+
+```bash
+cd ~/code/<your-tool>
+bash <(curl -sL https://raw.githubusercontent.com/Lecturio-Production/lecturio-design-tokens/main/scripts/bootstrap-tool.sh)
+```
+
+The manual checklists below describe what the script does, in case you need to do it by hand or audit the output.
 
 ### Path A: Tailwind + Preset (default)
 
