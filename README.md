@@ -11,6 +11,8 @@ This repo is consumed as a **git submodule** in each tool. Pinning to a specific
 | `tokens.css` | CSS custom properties (colors, shadows, typography) + Noto Sans loader. Imported in the consuming app's main stylesheet for runtime access via `var(--*)`. |
 | `tailwind-preset.cjs` | Tailwind preset wiring the tokens to shadcn-style utility names (`bg-primary`, `text-muted-foreground`, `shadow-card`, …). Added to each tool's `tailwind.config.ts` `presets` array. |
 | `components.css` | `.lec-*` component primitives (button, card, page-header, form-block, app-shell). |
+| `assets/logo.png` | Canonical Lecturio logo. Used by `LecShellHeader` via `brand.productName` — see `react/README.md`. |
+| `assets/favicon.png` | Canonical Lecturio favicon. Wire into your app head/manifest (Next.js App Router: re-export as `app/icon.png`; static: `<link rel="icon" type="image/png" href="…/design-tokens/assets/favicon.png">`). |
 | `STYLEGUIDE.md` | Hard rules + component recipes. **Read this before writing UI.** |
 | `STACK.md` | Mandatory tech stack contract (React, Tailwind, Radix, Lucide). |
 | `preview.html` | Static preview of the components + tokens. Open in a browser. |

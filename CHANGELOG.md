@@ -18,6 +18,12 @@ _Nothing pending._
 
 ---
 
+## 2026-05-02
+
+- **`feat`** Add `assets/favicon.png` — canonical Lecturio favicon (29×40 PNG, RGBA). Consuming tools should wire it into their app head/manifest so every Lecturio tool ships with the same brand mark in the browser tab. For Next.js apps: copy or re-export it from `app/icon.png` (App Router auto-discovers); for static pages: `<link rel="icon" type="image/png" href="…/design-tokens/assets/favicon.png">`.
+
+---
+
 ## 2026-04-29
 
 - **`feat`** Add `templates/Containerfile.submodule-init` — canonical Docker snippet for fetching the submodule on Railway / CI builds. Update `STACK.md` to reference it instead of "steal from the orchestrator".
